@@ -1,4 +1,4 @@
-package com.ing.store_management.model;
+package com.ing.store_management.model.entity;
 
 import java.sql.Timestamp;
 
