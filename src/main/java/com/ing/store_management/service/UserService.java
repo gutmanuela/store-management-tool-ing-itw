@@ -6,6 +6,7 @@ import com.ing.store_management.model.entity.Role;
 import com.ing.store_management.model.entity.User;
 import com.ing.store_management.repository.RoleRepository;
 import com.ing.store_management.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +39,9 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        String roleName = user.getRole().getName();
-        roleRepository.findByName(roleName).orElseThrow(() -> new ResourceNotFoundException("Role with name " + roleName + " was not found."));
-
+        String roleName = userDto.getRoleName();
+        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new ResourceNotFoundException("Role with name " + roleName + " was not found."));
+        user.setRole(role);
         user = userRepository.save(user);
         return convertToDto(user);
     }
@@ -51,21 +52,24 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " was not found."));
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    @Transactional
+    public void deleteUser(String username) {
+        userRepository.deleteUserByUsername(username);
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User with username " + username + " was not found."));
     }
 
     private UserDto convertToDto(User user) {
-        return new UserDto(user.getId(), user.getUsername(), user.getPassword(), user.getRole().getName());
+        return new UserDto(user.getUsername(), user.getPassword(), user.getRole().getName());
     }
 
     private User convertToEntity(UserDto userDto) {
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
-        Role role= new Role();
-        role.setName(userDto.getRoleName());
-        user.setRole(role);
         return user;
     }
 }

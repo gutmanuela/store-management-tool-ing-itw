@@ -1,6 +1,5 @@
 package com.ing.store_management.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -13,10 +12,6 @@ public class Role {
     @Column(unique = true)
     private String name;
     private String description;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "role")
-    private User user;
 
     public Long getId() {
         return id;
@@ -40,13 +35,5 @@ public class Role {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

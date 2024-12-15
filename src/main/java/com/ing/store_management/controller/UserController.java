@@ -2,7 +2,6 @@ package com.ing.store_management.controller;
 
 import com.ing.store_management.model.dto.UserDto;
 import com.ing.store_management.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    //create user with a specific role
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.createUser(userDto));
@@ -33,9 +31,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
         return ResponseEntity.noContent().build();
     }
 }

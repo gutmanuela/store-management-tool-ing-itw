@@ -1,6 +1,5 @@
 package com.ing.store_management.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -10,12 +9,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Username is required")
+    @Column(unique = true)
     private String username;
     @NotBlank(message = "Password is required")
     private String password;
 
-    @JsonIgnore
-    @OneToOne ()
+    @ManyToOne
+    @JoinColumn(name = "role_id")
     private Role role;
 
     public void setId(Long id) {
