@@ -5,7 +5,6 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 
-@Data
 @AllArgsConstructor
 public class StockManagementDto {
     private Long id;
