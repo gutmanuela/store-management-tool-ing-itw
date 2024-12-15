@@ -34,7 +34,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto createUser(UserDto userDto) {
+    public void createUser(UserDto userDto) {
         User user = convertToEntity(userDto);
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -42,8 +42,7 @@ public class UserService {
         String roleName = userDto.getRoleName();
         Role role = roleRepository.findByName(roleName).orElseThrow(() -> new ResourceNotFoundException("Role with name " + roleName + " was not found."));
         user.setRole(role);
-        user = userRepository.save(user);
-        return convertToDto(user);
+        userRepository.save(user);
     }
 
     public UserDto getUserById(Long id) {
