@@ -17,18 +17,18 @@ public class RoleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RoleDto>> getAllroles() {
+    public ResponseEntity<List<RoleDto>> getAllRoles() {
         return ResponseEntity.ok(roleService.getAllRoles());
     }
 
     @PostMapping
-    public ResponseEntity<RoleDto> createrole(@RequestBody RoleDto RoleDto) {
+    public ResponseEntity<RoleDto> createRole(@RequestBody RoleDto RoleDto) {
         roleService.addRole(RoleDto);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{roleName}")
-    public ResponseEntity<Void> deleterole(@PathVariable String roleName) {
+    public ResponseEntity<Void> deleteRole(@PathVariable String roleName) {
         roleService.deleteRoleByName(roleName);
         return ResponseEntity.noContent().build();
     }
