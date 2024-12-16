@@ -5,12 +5,22 @@ public class ProductDto {
     private double price;
     private int stockQuantity;
     private String code;
+    private String categoryName;
 
-    public ProductDto(String code, double price, String name, int stockQuantity) {
+    public ProductDto(String code, double price, String name, int stockQuantity, String categoryName) {
         this.name = name;
         this.price = price;
         this.stockQuantity = stockQuantity;
         this.code = code;
+        this.categoryName = categoryName;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getName() {

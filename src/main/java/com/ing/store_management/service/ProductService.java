@@ -1,11 +1,13 @@
 package com.ing.store_management.service;
 
 import com.ing.store_management.exception.ResourceNotFoundException;
+import com.ing.store_management.model.dto.CategoryDto;
 import com.ing.store_management.model.dto.ProductDto;
 import com.ing.store_management.model.entity.Category;
 import com.ing.store_management.model.entity.ChangeType;
 import com.ing.store_management.model.entity.Product;
 import com.ing.store_management.model.entity.StockManagement;
+import com.ing.store_management.repository.CategoryRepository;
 import com.ing.store_management.repository.ProductRepository;
 import com.ing.store_management.repository.StockManagementRepository;
 import jakarta.transaction.Transactional;
@@ -20,11 +22,13 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final StockManagementRepository stockManagementRepository;
     private final CategoryService categoryService;
+    private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository, StockManagementRepository stockManagementRepository, CategoryService categoryService) {
+    public ProductService(ProductRepository productRepository, StockManagementRepository stockManagementRepository, CategoryService categoryService, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.stockManagementRepository = stockManagementRepository;
         this.categoryService = categoryService;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<ProductDto> getAllProducts() {
@@ -38,13 +42,14 @@ public class ProductService {
         return productRepository.findByCode(code).map(this::convertToDto)
                 .orElseThrow(() -> new ResourceNotFoundException("Product with code " + code + " was not found."));
     }
-  public List<ProductDto> getProductsByCategory(String categoryName) {
-      Category category=  categoryService.findByCategoryName(categoryName);
+
+    public List<ProductDto> getProductsByCategory(String categoryName) {
+        Category category = categoryService.findByCategoryName(categoryName);
         return productRepository.getProductsByCategory(category)
                 .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
-  }
+    }
 
     @Transactional
     public void addProduct(ProductDto productDto) {
@@ -55,6 +60,8 @@ public class ProductService {
         stockManagement.setDate(new Timestamp(System.currentTimeMillis()));
         stockManagement.setChangeQuantity(product.getStockQuantity());
         stockManagement.setChangeType(ChangeType.ADDED);
+        Category category = categoryRepository.findByName(productDto.getCategoryName()).orElseThrow(() -> new ResourceNotFoundException("Category with name " + productDto.getCategoryName() + " was not found."));
+        product.setCategory(category);
         productRepository.save(product);
         stockManagementRepository.save(stockManagement);
     }
@@ -74,7 +81,7 @@ public class ProductService {
     }
 
     private ProductDto convertToDto(Product product) {
-        return new ProductDto(product.getCode(), product.getPrice(), product.getName(), product.getStockQuantity());
+        return new ProductDto(product.getCode(), product.getPrice(), product.getName(), product.getStockQuantity(), product.getCategory().getName());
     }
 
     private Product convertToEntity(ProductDto productDto) {
@@ -84,5 +91,9 @@ public class ProductService {
         product.setName(productDto.getName());
         product.setStockQuantity(productDto.getStockQuantity());
         return product;
+    }
+
+    private CategoryDto convertToDto(Category category) {
+        return new CategoryDto(category.getName(), category.getDescription());
     }
 }
