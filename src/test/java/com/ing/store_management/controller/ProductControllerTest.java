@@ -1,7 +1,6 @@
-package com.ing.store_management.service.integration;
+package com.ing.store_management.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ing.store_management.controller.ProductController;
 import com.ing.store_management.model.dto.ProductDto;
 import com.ing.store_management.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductControllerIntegrationTest {
+public class ProductControllerTest {
 
     public static final String CATEGORY_NAME = "Category 1";
     public static final String PRODUCT_NAME = "Product 1";
