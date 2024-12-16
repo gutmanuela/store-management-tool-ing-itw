@@ -19,7 +19,7 @@ public class CategoryController {
 
     @GetMapping()
     public ResponseEntity<List<CategoryDto>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategorys());
+        return ResponseEntity.ok(categoryService.getAllCategoris());
     }
 
     @PostMapping
@@ -29,7 +29,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }

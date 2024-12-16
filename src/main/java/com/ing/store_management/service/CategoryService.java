@@ -18,7 +18,7 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<CategoryDto> getAllCategorys() {
+    public List<CategoryDto> getAllCategoris() {
         return categoryRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
@@ -27,7 +27,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public void deleteCategory(Integer id) {
+    public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
     }
 

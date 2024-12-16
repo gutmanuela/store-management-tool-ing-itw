@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface StockManagementRepository extends JpaRepository<StockManagement, Integer> {
+public interface StockManagementRepository extends JpaRepository<StockManagement, Long> {
     List<StockManagement> findByProduct(Product product);
 }
