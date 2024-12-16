@@ -21,12 +21,22 @@ public class Product {
     @Column(unique = true)
     private String code;
 
+    public Product() {
+    }
+
+    public Product(Category category, Long id, String name) {
+        this.category = category;
+        this.id = id;
+        this.name = name;
+    }
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<StockManagement> stockManagements;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
+
 
     public Category getCategory() {
         return category;
