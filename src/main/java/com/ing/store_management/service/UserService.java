@@ -56,9 +56,9 @@ public class UserService {
         userRepository.deleteUserByUsername(username);
     }
 
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User with username " + username + " was not found."));
+    public UserDto getUserByUsername(String username) {
+        return convertToDto(userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User with username " + username + " was not found.")));
     }
 
     private UserDto convertToDto(User user) {

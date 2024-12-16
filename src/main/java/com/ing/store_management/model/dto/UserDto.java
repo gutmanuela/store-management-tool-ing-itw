@@ -1,9 +1,12 @@
 package com.ing.store_management.model.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class UserDto {
 
     private String username;
+    @JsonIgnore
     private String password;
     private String roleName;
 
