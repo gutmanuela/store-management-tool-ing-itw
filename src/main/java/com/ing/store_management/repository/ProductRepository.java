@@ -1,5 +1,6 @@
 package com.ing.store_management.repository;
 
+import com.ing.store_management.model.entity.Category;
 import com.ing.store_management.model.entity.Product;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,4 +15,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     void deleteByCode(@NotBlank String code);
 
     List<Product> getProductsByPriceIsLessThan(@NotNull double priceIsLessThan);
+
+    List<Product> getProductsByCategory(Category category);
 }

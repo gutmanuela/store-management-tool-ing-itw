@@ -43,6 +43,12 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+
+    @GetMapping("/category")
+    public ResponseEntity<List<ProductDto>> getAllUsersByCategory(String categoryName) {
+        return ResponseEntity.ok(productService.getProductsByCategory(categoryName));
+    }
+
     @DeleteMapping("/{code}")
     public ResponseEntity<Void> deleteProduct(@PathVariable String code) {
         productService.deleteProductByCode(code);
