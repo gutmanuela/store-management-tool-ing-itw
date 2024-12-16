@@ -1,7 +1,6 @@
 package com.ing.store_management.service;
 
 import com.ing.store_management.exception.ResourceNotFoundException;
-import com.ing.store_management.model.dto.CategoryDto;
 import com.ing.store_management.model.dto.ProductDto;
 import com.ing.store_management.model.entity.Category;
 import com.ing.store_management.model.entity.ChangeType;
@@ -11,6 +10,8 @@ import com.ing.store_management.repository.CategoryRepository;
 import com.ing.store_management.repository.ProductRepository;
 import com.ing.store_management.repository.StockManagementRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -19,10 +20,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
+    public static final String NEW_PRODUCT_WAS_ADDED_RESON = "New product was added.";
     private final ProductRepository productRepository;
     private final StockManagementRepository stockManagementRepository;
     private final CategoryService categoryService;
     private final CategoryRepository categoryRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     public ProductService(ProductRepository productRepository, StockManagementRepository stockManagementRepository, CategoryService categoryService, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
@@ -56,13 +60,15 @@ public class ProductService {
         Product product = convertToEntity(productDto);
         StockManagement stockManagement = new StockManagement();
         stockManagement.setProduct(product);
-        stockManagement.setReason("New product was added.");
+        stockManagement.setReason(NEW_PRODUCT_WAS_ADDED_RESON);
         stockManagement.setDate(new Timestamp(System.currentTimeMillis()));
         stockManagement.setChangeQuantity(product.getStockQuantity());
         stockManagement.setChangeType(ChangeType.ADDED);
         Category category = categoryRepository.findByName(productDto.getCategoryName()).orElseThrow(() -> new ResourceNotFoundException("Category with name " + productDto.getCategoryName() + " was not found."));
+        logger.debug("Category was found: " + category.toString());
         product.setCategory(category);
         productRepository.save(product);
+        logger.debug("Product was saved: " + product.toString());
         stockManagementRepository.save(stockManagement);
     }
 
@@ -91,9 +97,5 @@ public class ProductService {
         product.setName(productDto.getName());
         product.setStockQuantity(productDto.getStockQuantity());
         return product;
-    }
-
-    private CategoryDto convertToDto(Category category) {
-        return new CategoryDto(category.getName(), category.getDescription());
     }
 }
