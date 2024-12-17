@@ -2,7 +2,7 @@
 
 The Store Management Tool is a Spring Boot application designed to help store managers efficiently manage inventory, product, and stock movements. It provides features such as product management, stock-tracking, role-based access control.
 
-![img.png](img.png)
+![img_1.png](img_1.png)
 
 Features
 - Get all users
@@ -14,13 +14,15 @@ Features
 - Get product in a specific category
 - Get all categories
 - Add, delete category
+- add, get, delete customers and suppliers
+- get all suppliers for a product
 
 Proposal for further development:
-- add, get, delete customers and suppliers
 - get all orders
 - perform order for a customer
 - get all orders for a customer
-- get all suppliers for a product
+- get all customers
+- add, delete a customer
 
 
 Authorization is role based. Application was designed with 2 main roles: admin and product-manager.

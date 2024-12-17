@@ -26,6 +26,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/products/**").hasAnyRole("product-manager", "admin")
                         .requestMatchers("/stocks/**").hasAnyRole("product-manager", "admin")
                         .requestMatchers("/categories/**").hasAnyRole("product-manager", "admin")
+                        .requestMatchers("/suppliers/**").hasAnyRole("product-manager", "admin")
                         .requestMatchers("/users/**").hasRole("admin")
                         .requestMatchers("/roles/**").hasRole("admin")
                         .requestMatchers("/login").permitAll()
