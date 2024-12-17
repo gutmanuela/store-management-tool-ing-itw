@@ -21,6 +21,16 @@ public class Product {
     @Column(unique = true)
     private String code;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<StockManagement> stockManagements;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToMany
+    List<Supplier> suppliers;
+
     public Product() {
     }
 
@@ -30,13 +40,13 @@ public class Product {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<StockManagement> stockManagements;
+    public List<Supplier> getSuppliers() {
+        return suppliers;
+    }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
+    public void setSuppliers(List<Supplier> suppliers) {
+        this.suppliers = suppliers;
+    }
 
     public Category getCategory() {
         return category;

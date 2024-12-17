@@ -2,19 +2,18 @@ package com.ing.store_management.service;
 
 import com.ing.store_management.exception.ResourceNotFoundException;
 import com.ing.store_management.model.dto.ProductDto;
-import com.ing.store_management.model.entity.Category;
-import com.ing.store_management.model.entity.ChangeType;
-import com.ing.store_management.model.entity.Product;
-import com.ing.store_management.model.entity.StockManagement;
+import com.ing.store_management.model.entity.*;
 import com.ing.store_management.repository.CategoryRepository;
 import com.ing.store_management.repository.ProductRepository;
 import com.ing.store_management.repository.StockManagementRepository;
+import com.ing.store_management.repository.SupplierRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,14 +24,16 @@ public class ProductService {
     private final StockManagementRepository stockManagementRepository;
     private final CategoryService categoryService;
     private final CategoryRepository categoryRepository;
+    private final SupplierRepository   supplierRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
-    public ProductService(ProductRepository productRepository, StockManagementRepository stockManagementRepository, CategoryService categoryService, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository productRepository, StockManagementRepository stockManagementRepository, CategoryService categoryService, CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
         this.productRepository = productRepository;
         this.stockManagementRepository = stockManagementRepository;
         this.categoryService = categoryService;
         this.categoryRepository = categoryRepository;
+        this.supplierRepository = supplierRepository;
     }
 
     public List<ProductDto> getAllProducts() {
@@ -67,6 +68,8 @@ public class ProductService {
         Category category = categoryRepository.findByName(productDto.getCategoryName()).orElseThrow(() -> new ResourceNotFoundException("Category with name " + productDto.getCategoryName() + " was not found."));
         logger.debug("Category was found: " + category.toString());
         product.setCategory(category);
+        Supplier supplier = supplierRepository.findById(productDto.getSupplierId()).orElseThrow(() -> new ResourceNotFoundException("Supplier with id " + productDto.getSupplierId() + " was not found."));
+        product.getSuppliers().add(supplier);
         productRepository.save(product);
         logger.debug("Product was saved: " + product.toString());
         stockManagementRepository.save(stockManagement);
@@ -96,6 +99,8 @@ public class ProductService {
         product.setPrice(productDto.getPrice());
         product.setName(productDto.getName());
         product.setStockQuantity(productDto.getStockQuantity());
+        product.setSuppliers(new ArrayList<>());
+
         return product;
     }
 }

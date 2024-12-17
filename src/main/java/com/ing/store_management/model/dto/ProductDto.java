@@ -6,6 +6,7 @@ public class ProductDto {
     private int stockQuantity;
     private String code;
     private String categoryName;
+    private Long supplierId;
 
     public ProductDto() {
     }
@@ -23,6 +24,14 @@ public class ProductDto {
         this.price = price;
         this.code = code;
         this.categoryName = categoryName;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getCategoryName() {
